@@ -1,0 +1,4 @@
+/vendor
+/image-cache/**/cached-*
+.DS_Store
+/.bundle
