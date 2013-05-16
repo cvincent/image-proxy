@@ -60,10 +60,12 @@ the source and modify as you see fit. Of interest:
    intervals.
  * Build in a cryptographic signature check with a shared secret to prevent
    abuse and potential DOS.
+ * Proper HTTP cache headers.
  * Smarter caching. Right now all originals from upstream and processed versions
    are swept periodically, regardless of the age of each individual file. Would
    be better to have a FIFO approach with a disk limit instead.
  * Do disk I/O in asynchronous chunks.
+ * Error handling, either with a proper 500 response or a canned error image.
 
 ## Contributing
 
