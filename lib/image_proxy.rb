@@ -10,6 +10,10 @@ require_relative "image_processor"
 class ImageProxy < Sinatra::Base
   register Sinatra::Synchrony
 
+  set :environment, :production
+  set :port, 8000
+  disable :run, :reload
+
   ORIGINALS_CACHE_SWEEP_INTERVAL = (60 * 60) * 12 # Every 12 hours
   PROCESSED_CACHE_SWEEP_INTERVAL = (60 * 60) * 2  # Every  2 hours
 
