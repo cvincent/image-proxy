@@ -1,4 +1,5 @@
 load 'deploy' if respond_to?(:namespace)
+require "bundler/capistrano"
 
 set :application, "image-proxy"
 set :user, "ubuntu"
