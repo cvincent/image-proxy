@@ -44,7 +44,7 @@ This will cache, resize, cache, and serve up the image here:
 This is really just a basic Sinatra app built on Sinatra-Synchrony, so check
 the source and modify as you see fit. Of interest:
 
- * `ImageResizer`: This is the Sinatra app itself, with a single endpoint.
+ * `ImageProxy`: This is the Sinatra app itself, with a single endpoint.
  * `ImageLocator`: Handles caching of original images from upstream and
    processed versions of original images. You'll notice that the upstream
    address is currently hardcoded here.
