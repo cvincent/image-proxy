@@ -4,7 +4,7 @@ address: 127.0.0.1
 user: ubuntu
 group: ubuntu
 port: 8000
-pid: /image-proxy/current/tmp/thin.pid
+pid: /image-proxy/current/tmp/pids/thin.pid
 rackup: /image-proxy/current/config.ru
 log: /image-proxy/current/log/thin.log
 max_conns: 1024
