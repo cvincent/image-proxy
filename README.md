@@ -35,7 +35,7 @@ Clone the repository and run:
 
 Go to the following URL:
 
-    http://localhost:3001/image_proxy/constrain/320/240/assets/images/my-image.jpg
+    http://localhost:3001/image_proxy/constrain/320/240/my-upstream-server.com/assets/images/my-image.jpg
 
 This will cache, resize, cache, and serve up the image here:
 
@@ -46,8 +46,7 @@ the source and modify as you see fit. Of interest:
 
  * `ImageProxy`: This is the Sinatra app itself, with a single endpoint.
  * `ImageLocator`: Handles caching of original images from upstream and
-   processed versions of original images. You'll notice that the upstream
-   address is currently hardcoded here.
+   processed versions of original images.
  * `ImageProcessor`: Various processors. These make use of a class from
    Anisoptera to construct an ImageMagick conversion command. Would be fairly
    easy to extend with custom processors as you might need them.
@@ -56,8 +55,7 @@ the source and modify as you see fit. Of interest:
 
  * Tests. This started out as a spike to check the feasibility of the idea, but
    we all know that so-called prototypes eventually make it into production. ;)
- * Configuration. Get rid of the hardcoded upstream address and cache sweep
-   intervals.
+ * Configuration. Get rid of the hardcoded cache sweep intervals.
  * Build in a cryptographic signature check with a shared secret to prevent
    abuse and potential DOS.
  * Proper HTTP cache headers.

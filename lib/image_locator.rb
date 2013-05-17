@@ -2,21 +2,20 @@ class ImageLocator
   require "digest/md5"
   require "em-synchrony/fiber_iterator"
 
-  S3_BUCKET = "https://cantaloupe-contests.s3.amazonaws.com/"
   ORIGINALS_CACHE_DIRECTORY = File.dirname(__FILE__) + "/../image-cache/originals/"
   PROCESSED_CACHE_DIRECTORY = File.dirname(__FILE__) + "/../image-cache/processed/"
   CACHE_PREFIX = "cached-"
 
-  def initialize(path, ext)
-    @path, @ext = path, ext
+  def initialize(host, path, ext)
+    @host, @path, @ext = host, path, ext
   end
 
-  attr_accessor :path, :ext
+  attr_accessor :host, :path, :ext
 
   def original_image_path
     original_cache_path.tap do
       unless File.exists?(original_cache_path)
-        image_data = fetch_image_data_from_s3
+        image_data = fetch_image_data_from_remote
         File.open(original_cache_path, "wb+") { |f| f.write(image_data) }
       end
     end
@@ -44,12 +43,16 @@ class ImageLocator
 
   private
 
-  def fetch_image_data_from_s3
-    Faraday.get(s3_url).body
+  def fetch_image_data_from_remote
+    Faraday.get(remote_url).body
   end
 
-  def s3_url
-    @s3_url ||= S3_BUCKET + path + "." + ext
+  def remote_url
+    @remote_url ||= "http://" + remote_domain_and_path
+  end
+
+  def remote_domain_and_path
+    @remote_domain_and_path ||= "#{host}/#{path}.#{ext}"
   end
 
   def original_cache_path
@@ -67,7 +70,7 @@ class ImageLocator
   end
 
   def cache_name
-    @cache_name ||= Digest::MD5.hexdigest(path + "." + ext)
+    @cache_name ||= Digest::MD5.hexdigest(remote_domain_and_path)
   end
 
   class << self
