@@ -10,9 +10,11 @@ set :repository,  "git@github.com:cvincent/image-proxy.git"
 set :deploy_via, :remote_cache
 set :deploy_to, "/#{application}"
 
-role :app, "sweetstakes-i1"
-role :web, "sweetstakes-i1"
-role :db,  "sweetstakes-i1", primary: true
+servers = (1..1).map { |i| "sweetstakes-i#{i}" }
+
+role :app, *servers
+role :web, *servers
+role :db,  *servers.first, primary: true
 
 set :runner, user
 set :admin_runner, user
