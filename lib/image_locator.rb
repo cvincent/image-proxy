@@ -44,7 +44,7 @@ class ImageLocator
   private
 
   def fetch_image_data_from_remote
-    Faraday.get(remote_url).body
+    Faraday.get(remote_url.gsub(" ", "%20")).body
   end
 
   def remote_url

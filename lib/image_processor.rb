@@ -2,7 +2,6 @@ class ImageProcessor
   require "digest/md5"
   require "pathname"
   require "anisoptera/commander"
-  require_relative "anisoptera_ext"
 
   class << self
     def factory(type, w, h)
