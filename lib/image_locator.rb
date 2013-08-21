@@ -34,7 +34,7 @@ class ImageLocator
     case ext.downcase
     when "png"
       "image/png"
-    when "jpg", "jpeg"
+    when "jpg", "jpeg", ""
       "image/jpeg"
     when "gif"
       "image/gif"
@@ -44,7 +44,13 @@ class ImageLocator
   private
 
   def fetch_image_data_from_remote
-    Faraday.get(remote_url.gsub(" ", "%20")).body
+    resp = Faraday.get(remote_url.gsub(" ", "%20"))
+
+    if resp.status == 200
+      resp.body
+    elsif resp.status == 302
+      Faraday.get(resp.headers["Location"]).body
+    end
   end
 
   def remote_url
@@ -52,7 +58,10 @@ class ImageLocator
   end
 
   def remote_domain_and_path
-    @remote_domain_and_path ||= "#{host}/#{path}.#{ext}"
+    @remote_domain_and_path ||= begin
+      url = "#{host}/#{path}"
+      ext == "" ? url : "#{url}.#{ext}"
+    end
   end
 
   def original_cache_path
@@ -66,7 +75,8 @@ class ImageLocator
 
   def cache_file_name(extra = "")
     @cache_file_names ||= {}
-    @cache_file_names[extra] ||= CACHE_PREFIX + cache_name + "-" + extra + "." + ext
+    e = ext == "" ? "jpg" : ext
+    @cache_file_names[extra] ||= CACHE_PREFIX + cache_name + "-" + extra + "." + e
   end
 
   def cache_name

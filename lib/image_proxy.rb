@@ -34,9 +34,18 @@ class ImageProxy < Sinatra::Base
   end
 
   get "/image_proxy/:type/:w/:h/:host/*.*" do
+    process
+  end
+
+  get "/image_proxy/:type/:w/:h/:host/*" do
+    process
+  end
+
+  def process
     type = params[:type]
     width = Integer(params[:w])
     height = Integer(params[:h])
+    params[:splat] << "" if params[:splat].size == 1
 
     image_locator = ImageLocator.new(params[:host], *params[:splat])
     image_processor = ImageProcessor.factory(type, width, height)
